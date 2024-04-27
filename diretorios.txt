@@ -1,0 +1,22 @@
+
+Repositório de exemplo de organização de pastas.
+
+https://github.com/golang-standards/project-layout
+
+
+Pastas importantes:
+
+internal -> Onde roda a aplicação. Tem coisas somente da sua aplicação. O código dessa pasta não é reutilizável.
+pkg -> O oposto da internal. Libraries que criamos para ser compartilhada.
+cmd -> Onde fica seu projeto, onde vai ser gerado seu executável. Deve ser criada uma pasta para o main da sua aplicação.
+configs -> Coisas para configurações ou para ajudar a aplicação. Geralmente são arquivos para o boot da aplicação, mas podem ser utilziadas para templates por exemplo.
+test -> Documentaçãoes de testes, stubs, arquivos de html para testes, bibliotecas de postman, etc. Não necessariamente são arquivos .go, são arquivos para ajudar a testar o sistema.
+api -> Guaradar especificações da api. Utilizaremos o padrão Openapi
+
+Há mais opções, mas essas são as que vamos trabalhar nesse projeto.
+
+
+
+
+
+
