@@ -1,19 +1,23 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	_ "github.com/wandermaia/desafio-multithreading/internal/infra/webserver/handlers"
+	"github.com/wandermaia/desafio-multithreading/internal/infra/webserver/handlers"
 )
 
 func main() {
 
-	//cepHandler := handlers.GetCepHandler()
+	cepHandler := handlers.NewCepHandler()
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
-	//router.Get("/{cep}",)
-
+	router.Get("/{cep}", cepHandler.GetCep)
+	log.Println("Servidor iniciado!")
+	http.ListenAndServe(":8000", router)
 }
 
 /*
