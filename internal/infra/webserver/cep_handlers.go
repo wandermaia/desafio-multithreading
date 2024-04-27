@@ -30,6 +30,16 @@ type BrasilApiCep struct {
 	Service      string `json:"service"`
 }
 
+type CepHandler struct {
+	Cep string
+}
+
+func NewCepHandler() *CepHandler {
+	return &CepHandler{
+		Cep: "",
+	}
+}
+
 func GetCep(w http.ResponseWriter, r *http.Request) {
 	cep := chi.URLParam(r, "cep")
 	if cep == "" {

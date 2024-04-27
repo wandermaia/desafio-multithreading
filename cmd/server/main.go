@@ -7,10 +7,12 @@ import (
 )
 
 func main() {
+
+	//cepHandler := handlers.GetCepHandler()
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
-	//router.Get("/{cep}", han)
+	//router.Get("/{cep}",)
 
 }
 
