@@ -3,3 +3,5 @@ GET https://brasilapi.com.br/api/cep/v1/32450000
 ###
 GET http://viacep.com.br/ws/32450000/json
 
+###
+GET http://localhost:8000/?cep=32450000
