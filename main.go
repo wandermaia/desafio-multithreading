@@ -82,7 +82,7 @@ func main() {
 		if err != nil {
 			fmt.Printf("Erro ao consultar BuscaCepViaCep: %s", err)
 		}
-		time.Sleep(time.Second * 2)
+		//time.Sleep(time.Second * 2)
 		channel2 <- cep2
 	}()
 
@@ -94,7 +94,7 @@ func main() {
 		fmt.Printf("Dados recebidos do site https://viacep.com.br: \n\n%s\n\n", FormataJson(dadosCep))
 
 	case <-time.After(time.Second):
-		println("Timeout! As APIs demoraram mais do que 1 segundo para responder!")
+		fmt.Printf("Timeout! As APIs demoraram mais do que 1 segundo para responder!\n\n")
 	}
 
 }
@@ -123,7 +123,6 @@ func BuscaCepViaCep(cep string) (*ViaCEP, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Println(resp.StatusCode)
 
 	var dadosCep ViaCEP
 	err = json.Unmarshal(body, &dadosCep)
