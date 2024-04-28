@@ -3,7 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
+
+	"github.com/go-chi/chi"
 )
 
 type ViaCEP struct {
@@ -17,24 +20,26 @@ type ViaCEP struct {
 	Gia         string `json:"gia"`
 	Ddd         string `json:"ddd"`
 	Siafi       string `json:"siafi"`
+	Site        string
+}
+
+type BrasilApiCep struct {
+	Cep          string `json:"cep"`
+	State        string `json:"state"`
+	City         string `json:"city"`
+	Neighborhood string `json:"neighborhood"`
+	Street       string `json:"street"`
+	Service      string `json:"service"`
+	Site         string
 }
 
 func BuscaCepHandler(w http.ResponseWriter, r *http.Request) {
 
-	if r.URL.Path != "/" {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
-	cepParam := r.URL.Query().Get("cep")
-	if cepParam == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	cep, err := BuscaCep(cepParam)
+	cepParam := chi.URLParam(r, "cep")
+	cep, err := BuscaCepBrasilApi(cepParam)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		log.Printf("Erro ao buscar o cep: %s", err)
 		return
 	}
 
@@ -45,24 +50,50 @@ func BuscaCepHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func BuscaCep(cep string) (*ViaCEP, error) {
-	resp, error := http.Get("http://viacep.com.br/ws/" + cep + "/json/")
-	if error != nil {
-		return nil, error
+func BuscaCepViaCep(cep string) (*ViaCEP, error) {
+
+	url := "http://viacep.com.br/ws/" + cep + "/json/"
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
 	}
 	defer resp.Body.Close()
-	body, error := io.ReadAll(resp.Body)
-	if error != nil {
-		return nil, error
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	var c ViaCEP
-	error = json.Unmarshal(body, &c)
-
-	if error != nil {
-		return nil, error
+	var dadosCep ViaCEP
+	err = json.Unmarshal(body, &dadosCep)
+	if err != nil {
+		return nil, err
 	}
 
-	return &c, nil
+	dadosCep.Site = url
 
+	return &dadosCep, nil
+
+}
+
+func BuscaCepBrasilApi(cep string) (*BrasilApiCep, error) {
+
+	url := "https://brasilapi.com.br/api/cep/v1/" + cep
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var dadosCep BrasilApiCep
+	err = json.Unmarshal(body, &dadosCep)
+	if err != nil {
+		return nil, err
+	}
+	dadosCep.Site = url
+
+	return &dadosCep, nil
 }
