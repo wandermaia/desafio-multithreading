@@ -47,5 +47,5 @@ wander@bsnote283:~$
 
 ```
 
-Também há uma pasta de `test`, mas ela contem apenas as chamadas às APIs do https://brasilapi.com.br e do https://viacep.com.br. Essas chamadas foram utilizadas para testar essas APIs e verificar como é o retorno dos dados.
+Também há uma pasta de `test`, mas ela contém apenas as chamadas às APIs do https://brasilapi.com.br e do https://viacep.com.br. Essas chamadas foram utilizadas para testar essas APIs e verificar o retorno dos dados.
 
